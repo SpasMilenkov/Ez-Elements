@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<ButtonSettings>(),
         border: '2px solid transparent',
         borderFocused: '2px solid #E0E8F9',
         action: () => {
-            window.alert('Hello world')
+            window.alert('Hello world') 
         }
     })
 
