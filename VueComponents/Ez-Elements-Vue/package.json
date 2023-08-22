@@ -23,14 +23,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "oh-vue-icons": "^1.0.0-rc3",
     "vue": "^3.3.4"
   },
   "devDependencies": {
+    "@types/node": "^20.4.5",
     "@vitejs/plugin-vue": "^4.2.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
-    "vue-tsc": "^1.8.5",
-    "@types/node": "^20.4.5"
-
+    "vue-tsc": "^1.8.5"
   }
 }
