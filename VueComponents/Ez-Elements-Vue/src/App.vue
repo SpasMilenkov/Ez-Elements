@@ -1,26 +1,10 @@
 <script setup lang="ts">
-// import FccButton from './components/FccButton.vue'
-import FccButton from './components/FccButton.vue'
 import "./style.css"
+import MainButton from './components/MainButtonComponent.vue'
 </script>
 
 <template>
-  <FccButton text="Run the Tests" />
+  <MainButton radius-preset="semi-rounded" font-size="1.5rem" content="Log in" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<style scoped></style>

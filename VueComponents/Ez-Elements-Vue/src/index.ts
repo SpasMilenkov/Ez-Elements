@@ -1,3 +1,3 @@
-import FccButton from "./components/FccButton.vue";
+import EzMainButton from "./components/MainButtonComponent.vue";
 
-export { FccButton };
+export { EzMainButton };
