@@ -11,8 +11,7 @@ import {
     BiTwitter,
     BiTelephoneFill,
     IoLocationSharp,
-    //TODO: swap the icon because it doesnt work with color props
-    IoGlobeOutline,
+    BiGlobe,
     IoMail 
 } from "oh-vue-icons/icons";
 
@@ -22,10 +21,11 @@ addIcons(BiFacebook,
     BiTwitter,
     BiTelephoneFill,
     IoLocationSharp,
-    IoGlobeOutline,
+    BiGlobe,
     IoMail)
 
 const app =createApp(App)
 
 app.component('v-icon', OhVueIcon)
 app.mount('#app')
+        

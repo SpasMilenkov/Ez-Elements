@@ -103,7 +103,7 @@ const props = withDefaults(defineProps<VerticalCardProps>(), {
             userPicture: '/default_images/profile-picture.jpg',
             userBanner: '#3F54A8',
             userInfo: ['spasmilenkov123123@gmai.com', 'www.spasmilenkov.dev', 'Pazardjik, Bulgaria', '+359 123 456 78'],
-            infoIcons: ['io-mail', 'io-globe-outline', 'io-location-sharp', 'bi-telephone-fill'],
+            infoIcons: ['io-mail', 'bi-globe', 'io-location-sharp', 'bi-telephone-fill'],
             mediaIcons: ['bi-facebook', 'bi-instagram', 'bi-linkedin', 'bi-twitter'],
             userMedia: ['', '', ',', '']
         }
@@ -167,7 +167,7 @@ composeLayout()
     height: 100%;
     min-width: 19.375rem;
     max-height: 4.375rem;
-    background: #3F54A8;
+    background: v-bind('data.userBanner');
     flex-shrink: 0;
     display: flex;
     z-index: 1;
