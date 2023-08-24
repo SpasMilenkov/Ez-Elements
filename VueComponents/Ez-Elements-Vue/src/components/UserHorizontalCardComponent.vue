@@ -3,7 +3,6 @@
         <div class="banner flex">
             <div class="image-container flex-column">
                 <img :src="data.userPicture" alt="" class="user-picture">
-                <h1 class="user-name">Spas Milenkov</h1>
             </div>
 
             <div class="media-container flex">
@@ -23,7 +22,7 @@
             </div>
         </div>
         <div class="flex-column card-body">
-            <h1 class="subtitle">Info:</h1>
+            <h1 class="subtitle">Spas Milenkov</h1>
             <div class="flex-column info-container" v-if="!customInfoColors">
                 <div class="flex" v-for="(info, index) in data.userInfo" :key="index">
                     <v-icon :name="data.infoIcons[index]" :fill="settings.infoIcons?.iconFillColor"
@@ -44,41 +43,15 @@
 </template>
 <script setup lang='ts'>
 import { ref } from 'vue'
+import { CardData, CardSettings } from '../interfaces/CardInterfaces'
+import { setBorderRadius } from '../presets';
 
-
-export interface VerticalCardSettings {
-    subtitleColor?: string,
-    subtitleFont?: string,
-    subtitleSize?: string,
-    detailsColor?: string,
-    detailsFont?: string,
-    detailsSize?: string,
-    infoIcons?: {
-        iconFillColor?: string,
-        multipleColors: string[],
-        iconSize?: number
-    },
-    mediaIcons?: {
-        iconFillColor?: string,
-        multipleColors: string[],
-        iconSize?: number
-    }
-}
-export interface VerticalCardData {
-    userName: string,
-    userPicture: string,
-    userBanner?: string,
-    userInfo: string[],
-    userMedia: string[],
-    infoIcons: string[],
-    mediaIcons: string[]
-}
 interface VerticalCardProps {
-    settings?: VerticalCardSettings,
-    data: VerticalCardData
+    settings?: CardSettings,
+    data: CardData
 }
 const props = withDefaults(defineProps<VerticalCardProps>(), {
-    settings: (): VerticalCardSettings => {
+    settings: (): CardSettings => {
         return {
             subtitleColor: '#1E2833',
             subtitleFont: 'Roboto, var(--system-ui)',
@@ -86,6 +59,9 @@ const props = withDefaults(defineProps<VerticalCardProps>(), {
             detailsColor: '#1E2833',
             detailsFont: 'Lato, var(--system-ui)',
             detailsSize: '1.25rem',
+            cardBackground: '#F4F7F9',
+            pictureBorder: 'solid 3px #F4F7F9',
+            radiusPreset: 'rounded',
             infoIcons: {
                 iconFillColor: '#292D32',
                 multipleColors: [],
@@ -98,7 +74,7 @@ const props = withDefaults(defineProps<VerticalCardProps>(), {
             }
         }
     },
-    data: (): VerticalCardData => {
+    data: (): CardData => {
         return {
             userName: 'Spas Milenkov',
             userPicture: '/default_images/profile-picture.jpg',
@@ -124,109 +100,118 @@ function composeLayout(): void {
     }
     console.log(props.settings.mediaIcons?.multipleColors)
 }
-
+const borderRadius = ref<string>(setBorderRadius(props.settings.radiusPreset))
 composeLayout()
 
 
 </script>
 <style scoped>
-.card, .banner, .card-body {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+.card,
+.banner,
+.card-body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
 
 .card {
-  width: 100%;
-  height: 100%;
-  background: #F4F7F9;
-  overflow: hidden;
+    width: 100%;
+    height: 100%;
+    /* background: v-bind('settings.cardBackground'); */
+    overflow: hidden;
+    border-radius: v-bind('borderRadius');
 }
 
+.card-body .flex-column {
+    align-self: stretch;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.5rem;
+}
 .card-body {
-  width: 65%;
-  padding: 1.5rem;
-  align-self: stretch;
-  gap: 1rem;
+    width: 65%;
+    height: 100%;
+    min-height: 15.75rem;
+    padding: 1.5rem;
+    background: v-bind('settings.cardBackground');
+    gap: 1rem;
 }
-
 .banner {
-  width: 35%;
-  background: #34469C;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  gap: 1rem;
-  align-items: center;
+    width: 35%;
+    min-height: 15.75rem;
+    background: v-bind('data.userBanner');
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1.5rem;
+    align-items: center;
 }
 
 .image-container {
-  gap: 1rem;
-  padding: 1rem 0.2rem;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  flex: 1;
+    gap: 1rem;
+    padding: 0.2rem ;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    flex: 1;
 }
 
 .user-picture {
-  object-fit: cover;
-  outline: solid 3px #F4F7F9;
-  width: 6.25rem;
-  height: 6.25rem;
-  border-radius: 50%;
+    object-fit: cover;
+    outline: v-bind('settings.pictureBorder ');
+    width: 6.25rem;
+    height: 6.25rem;
+    border-radius: 50%;
 }
+
 .info-container {
     align-items: flex-start;
     gap: 1rem;
 }
+
 .info-container .flex {
     gap: 0.5rem;
 }
-.subtitle, .user-info {
-  color: #292D32;
-  font-family: Lato;
-  font-size: 1.875rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  text-overflow: ellipsis;
-  overflow: hidden;
+
+.subtitle,
+.user-info {
+    color: v-bind('settings.subtitleColor');
+    font-family: v-bind('settings.subtitleFont');
+    font-size: v-bind('settings.subtitleSize');
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .user-info {
-  font-size: v-bind('settings.detailsSize') 1.375rem;
-  text-align: left;
-  gap: 0.5rem;
-  min-width: 0;
+    color: v-bind('settings.detailsColor');
+    font-family: v-bind('settings.detailsFont');
+    font-size: v-bind('settings.detailsSize');
+    text-align: left;
+    gap: 0.5rem;
+    min-width: 0;
 }
-
-.user-name {
-  color: #EFF6FF;
-  font-family: v-bind('settings.subtitleFont');
-  font-size: 1.5rem;
-  width: 100%;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
 .bottom-icons {
-  margin-top: 1rem;
-  gap: 0.5rem;
+    margin-top: 1rem;
+    gap: 0.5rem;
 }
 
 @media (max-width: 650px) {
-  .card {
-    flex-direction: column;
-  }
-  .banner, .card-body {
-    width: 100%;
-  }
-  .user-info {
-    max-width: 12rem;
-    overflow-wrap: break-word;
-  }
-}
+    .card {
+        flex-direction: column;
+    }
 
-</style>
+    .banner,
+    .card-body {
+        width: 100%;
+    }
+    .banner {
+        min-height: 10.75rem;
+    }
+    .user-info {
+        max-width: 12rem;
+        overflow-wrap: break-word;
+    }
+}</style>
