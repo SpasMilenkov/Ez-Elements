@@ -3,20 +3,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-
-export interface ButtonSettings {
-    content?: string,
-    background?: string,
-    fontFamily?: string,
-    color?: string,
-    radiusPreset?: 'no-radius' | 'semi-rounded' | 'rounded',
-    customRadius?: string,
-    shadow?: string,
-    fontSize?: string,
-    border?: string,
-    borderFocused?: string,
-    action: () => any
-}
+import { ButtonSettings } from '../interfaces/ButtonInterfaces';
 
 const props = withDefaults(defineProps<ButtonSettings>(),
     {
