@@ -1,41 +1,57 @@
 <template>
-    <button type="button" class="secondary-button" @click="action">{{ content }}</button>
+    <button type="button" class="secondary-button">{{ data.content }}</button>
 </template>
 <script setup lang="ts">
-import { ButtonSettings } from '../interfaces/ButtonInterfaces';
+import { ButtonData, ButtonSettings } from '../interfaces/ButtonInterfaces';
 import { ref } from 'vue'
-const props = withDefaults(defineProps<ButtonSettings>(),
+
+interface SecondaryButtonProps {
+    settings?: ButtonSettings,
+    data: ButtonData
+}
+const props = withDefaults(defineProps<SecondaryButtonProps>(),
     {
-        content: 'Log in',
-        color: '#F4F7F9',
-        background: 'transparent',
-        fontFamily: "'Lato', var(--system-ui)",
-        radiusPreset: 'rounded',
-        shadow: 'none',
-        fontSize: '1rem',
-        border: '2px solid transparent',
-        borderFocused: '2px solid #1E2833',
-        action: () => {
-            window.alert('Hello world')
+        settings: () => {
+            return {
+                content: 'Log in',
+                color: '#F4F7F9',
+                background: 'transparent',
+                fontFamily: "'Lato', var(--system-ui)",
+                radiusPreset: 'rounded',
+                shadow: 'none',
+                fontSize: '1rem',
+                border: '2px solid transparent',
+                borderFocused: '2px solid #1E2833',
+                action: () => {
+                    window.alert('Hello world')
+                }
+            }
+        },
+        data: () => {
+            return {
+                content: 'secondary',
+                action: () => window.alert('Hello world')
+            }
+
         }
-    })
+    },)
 
 const borderRadius = ref<string>()
 
 function setBorderRadius() {
-    if (props.customRadius !== undefined) {
-        borderRadius.value = props.customRadius;
+    if (props.settings.customRadius !== undefined) {
+        borderRadius.value = props.settings.customRadius;
         return;
     }
-    if (props.radiusPreset === 'no-radius') {
+    if (props.settings.radiusPreset === 'no-radius') {
         borderRadius.value = '0rem'
         return;
     }
-    if (props.radiusPreset === 'rounded') {
+    if (props.settings.radiusPreset === 'rounded') {
         borderRadius.value = '0.9375rem'
         return;
     }
-    if (props.radiusPreset === 'semi-rounded') {
+    if (props.settings.radiusPreset === 'semi-rounded') {
         borderRadius.value = '0.3125rem'
         return;
     }
@@ -55,22 +71,24 @@ setBorderRadius()
     gap: 0.625rem;
     border-radius: v-bind('borderRadius');
 
-    color: v-bind('color');
+    color: v-bind('settings.color');
     text-align: center;
     /* Regular text small */
-    font-family: v-bind('fontFamily');
-    font-size: v-bind('fontSize');
+    font-family: v-bind('settings.fontFamily');
+    font-size: v-bind('settings.fontSize');
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    cursor: pointer;
     transition: border 0.3s, color 0.3s;
 }
+
 .secondary-button:hover,
 .secondary-button:focus {
-    border: v-bind(borderFocused);
+    border: v-bind('settings.borderFocused');
 }
+
 .secondary-button:focus-visible {
-    outline: v-bind(borderFocused);
+    outline: v-bind('settings.borderFocused');
     border: 2px solid transparent;
-} 
-</style>
+}</style>
