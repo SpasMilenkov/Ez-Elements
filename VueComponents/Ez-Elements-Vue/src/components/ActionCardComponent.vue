@@ -1,53 +1,71 @@
 <template>
     <div class="flex-column card">
-        <h1 class="subtitle">Card title goes here</h1>
+        <h1 class="subtitle">{{data.cardTitle}}</h1>
         <div class="flex card-body">
             <v-icon></v-icon>
-            <p class="card-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua.</p>
+            <p class="card-content">{{data.cardContent}}</p>
         </div>
         <div class="flex button-container">
-            <EzSecondaryButton color="#1E2833"/>
-            <EzMainButton background="#CF1124" />
+            <EzSecondaryButton color="#1E2833" @click="closePopup" />
+            <EzMainButton background="#CF1124"  />
         </div>
     </div>
 </template>
 <script setup lang='ts'>
 import { EzMainButton } from '..';
 import { EzSecondaryButton } from '..';
-import {ref} from 'vue'
+import { ref } from 'vue';
 import { setBorderRadius } from '../presets';
+import { ActionCardSettings } from '../interfaces/ActionCardSettings';
 
-export interface ActionCardSettings{
-    radiusPreset: RadiusPreset
-}
+
 
 interface ActionCardProps {
     settings?: ActionCardSettings,
     data: {
         cardTitle: string,
         cardContent: string,
-        buttonSettingsLeft: {},
-        buttonSettingsRight: {} 
     }
 }
-const props = withDefaults(defineProps<ActionCardProps>(),  {
-    settings: () => {
+const props = withDefaults(defineProps<ActionCardProps>(), {
+    settings: () :ActionCardSettings => {
         return {
-            radiusPreset: 'semi-rounded'
+            background: '#F4F7F9',
+            showTitle: true,
+            showButtons: true,
+            radiusPreset: 'semi-rounded',
+            titleColor: '#1E2833',
+            titleFont: 'Lato, var(--system-ui)', 
+            titleSize: '1.675rem',
+            contentFont: 'Lato, var(--system-ui)',
+            contentSize: '1rem',
+            contentColor: '#1E2833',
+            highlightLine: {
+                showHighlight: true,
+                style: '5px solid #CF1124'
+            },
         }
     }
 })
+const emit = defineEmits<{
+    (e: 'close-popup'): void
+}>()
+
+const closePopup = () => {
+    emit('close-popup')
+}
 
 const borderRadius = ref<string>(setBorderRadius(props.settings.radiusPreset))
 </script>
 <style scoped>
 .card {
-    width: 20.75rem;
-    height: 13rem;
+    max-width: 20.75rem;
+    min-height: 13rem;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
-    border-left: 5px solid #CF1124;
-    background: #F4F7F9;
+    border-left: v-bind('settings.highlightLine?.style');
+    background: v-bind('settings.background');
     flex-shrink: 0;
     padding: 1rem;
     align-items: flex-start;
@@ -56,10 +74,10 @@ const borderRadius = ref<string>(setBorderRadius(props.settings.radiusPreset))
 }
 
 .subtitle {
-    color: #1E2833;
-    font-family: Lato;
-    font-size: 1.675rem;
-    font-style: normal;
+    color: v-bind('settings.titleColor');
+    font-family: v-bind('settings.titleFont');
+    font-size: v-bind('settings.titleSize');
+    font-style: bold;
     font-weight: 400;
     line-height: normal;
 }
@@ -68,9 +86,9 @@ const borderRadius = ref<string>(setBorderRadius(props.settings.radiusPreset))
 .card-content {
     text-align: left;
     width: 100%;
-    color: #1E2833;
-    font-family: Lato;
-    font-size: 1rem;
+    color: v-bind('settings.contentColor');
+    font-family: v-bind('settings.contentFont');
+    font-size: v-bind('settings.contentSize');
     font-style: normal;
     font-weight: 400;
     line-height: normal;
