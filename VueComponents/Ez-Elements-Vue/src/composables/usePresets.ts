@@ -1,4 +1,4 @@
-function setBorderRadius(preset:RadiusPreset | undefined):string {
+function useBorderRadius(preset:RadiusPreset | undefined):string {
     if (preset === 'no-radius') {
         return '0rem';
     }
@@ -12,4 +12,4 @@ function setBorderRadius(preset:RadiusPreset | undefined):string {
     return '0.9375rem'
 }
 
-export {setBorderRadius}
+export {useBorderRadius}
