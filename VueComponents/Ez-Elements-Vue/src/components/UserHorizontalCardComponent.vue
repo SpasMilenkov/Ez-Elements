@@ -177,7 +177,7 @@ composeLayout();
 
 .card {
     width: 100%;
-    height: 100%;
+    height: fit-content;
     /* background: v-bind('settings.cardBackground'); */
     overflow: hidden;
     border-radius: v-bind('borderRadius');
@@ -193,8 +193,10 @@ composeLayout();
 .card-body {
     width: 65%;
     height: 100%;
+    flex: 1;
     min-height: 15.75rem;
-    padding: 1.5rem;
+    padding: 2rem 1.5rem; 
+    justify-content: space-between;
     background: v-bind('finalSettings.cardBackground');
     gap: 1rem;
 }
@@ -202,6 +204,7 @@ composeLayout();
 .banner {
     width: 35%;
     min-height: 15.75rem;
+    height: 100%;
     background: v-bind('data.userBanner');
     flex-shrink: 0;
     display: flex;
@@ -253,6 +256,7 @@ composeLayout();
     font-family: v-bind('finalSettings.detailsFont');
     font-size: v-bind('finalSettings.detailsSize');
     text-align: left;
+    max-width: 10rem;
     gap: 0.5rem;
     min-width: 0;
 }
@@ -282,4 +286,3 @@ composeLayout();
     }
 }
 </style>
-../composables/presets../composables/usePresets

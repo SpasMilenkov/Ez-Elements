@@ -54,6 +54,8 @@ const borderRadius = ref<string>(useBorderRadius(props.settings.radiusPreset));
     align-items: center;
     gap: 0.625rem;
     border-radius: v-bind('borderRadius');
+    max-width: fit-content;
+    height: fit-content;
 
     color: v-bind('finalSettings.color');
     text-align: center;

@@ -56,12 +56,17 @@ const finalSettings = ref({ ...defaultSettings, ...props.settings })
     align-items: center;
     cursor: pointer;
     gap: 0.625rem;
+    max-width: fit-content;
+    height: fit-content;
 
     color: v-bind('finalSettings.color');
     font-family: v-bind('finalSettings.fontFamily');
     border: v-bind('finalSettings.border');
     font-size: v-bind('finalSettings.borderFocused');
     border-radius: v-bind('borderRadius');
+    transition:
+        border 0.3s,
+        color 0.3s;
 }
 
 .main-button:hover,

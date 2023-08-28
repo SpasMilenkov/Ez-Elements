@@ -193,7 +193,7 @@ composeLayout();
 }
 
 .card {
-    height: 100%;
+    height: fit-content;
     max-height: 26.875rem;
     overflow: hidden;
     background: #f4f7f9;

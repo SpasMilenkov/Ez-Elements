@@ -62,7 +62,7 @@ const borderRadius = ref<string>(useBorderRadius(props.settings.radiusPreset));
 .card {
     max-width: 20.75rem;
     min-height: 13rem;
-    height: 100%;
+    height: fit-content;
     width: 100%;
     overflow: hidden;
     border-left: v-bind('settings.highlightLine?.style');
@@ -99,4 +99,3 @@ const borderRadius = ref<string>(useBorderRadius(props.settings.radiusPreset));
     width: 100%;
 }
 </style>
-../composables/presets
