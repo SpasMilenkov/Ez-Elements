@@ -8,64 +8,55 @@
             <div class="media-container flex">
                 <div class="flex bottom-icons" v-if="!customMediaColors">
                     <a
+                        class="media-link"
                         :href="info"
                         v-for="(info, index) in data.mediaIcons"
                         :key="index"
                     >
-                        <v-icon
-                            :name="data.mediaIcons[index]"
-                            :fill="settings.mediaIcons?.iconFillColor"
-                            :scale="settings.mediaIcons?.iconSize"
-                        />
+                        <Icon
+                            :icon="data.mediaIcons[index]"
+                            :color="finalSettings.mediaIcons?.iconFillColor"
+                            :width="finalSettings.mediaIcons?.iconSize"
+                            :inline="true"
+                        ></Icon>
                     </a>
                 </div>
-
                 <div class="flex bottom-icons" v-if="customMediaColors">
                     <a
+                        class="media-link"
                         :href="info"
                         v-for="(info, index) in data.mediaIcons"
                         :key="index"
                     >
-                        <v-icon
-                            :name="data.mediaIcons[index]"
-                            :fill="settings.mediaIcons?.multipleColors[index]"
-                            :scale="settings.mediaIcons?.iconSize"
+                        <Icon
+                            :icon="data.mediaIcons[index]"
+                            :color="
+                                finalSettings.mediaIcons?.multipleColors[index]
+                            "
+                            :width="finalSettings.mediaIcons?.iconSize"
+                            :inline="true"
                         />
                     </a>
                 </div>
             </div>
         </div>
         <div class="flex-column card-body">
-            <h1 class="subtitle">Spas Milenkov</h1>
-            <div class="flex-column info-container" v-if="!customInfoColors">
-                <div
-                    class="flex"
-                    v-for="(info, index) in data.userInfo"
-                    :key="index"
-                >
-                    <v-icon
-                        :name="data.infoIcons[index]"
-                        :fill="settings.infoIcons?.iconFillColor"
-                        :scale="settings.infoIcons?.iconSize"
-                    ></v-icon>
-                    <h3 class="user-info">{{ info }}</h3>
+            <h1 class="subtitle">{{ data.userName }}</h1>
+                <div class="flex-column info-container" v-if="!customInfoColors">
+                    <div class="flex" v-for="(info, index) in data.userInfo" :key="index">
+                        <Icon :icon="data.infoIcons[index]" :color="finalSettings.infoIcons?.iconFillColor"
+                            :width="finalSettings.infoIcons?.iconSize" />
+                        <h3 class="user-info">{{ info }}</h3>
+                    </div>
                 </div>
-            </div>
 
-            <div class="flex-column" v-if="customInfoColors">
-                <div
-                    class="flex info-container"
-                    v-for="(info, index) in data.userInfo"
-                    :key="index"
-                >
-                    <v-icon
-                        :name="data.infoIcons[index]"
-                        :fill="settings.infoIcons?.multipleColors[index]"
-                        :scale="settings.infoIcons?.iconSize"
-                    ></v-icon>
-                    <h3 class="user-info">{{ info }}</h3>
+                <div class="flex-column" v-if="customInfoColors">
+                    <div class="flex info-container" v-for="(info, index) in data.userInfo" :key="index">
+                        <Icon :icon="data.infoIcons[index]" :color="finalSettings.infoIcons?.iconFillColor"
+                            :width="finalSettings.infoIcons?.iconSize" />
+                        <h3 class="user-info">{{ info }}</h3>
+                    </div>
                 </div>
-            </div>
         </div>
     </div>
 </template>
@@ -91,12 +82,12 @@ const defaultSettings: CardSettings = {
     infoIcons: {
         iconFillColor: '#292D32',
         multipleColors: [],
-        iconSize: 1.5,
+        iconSize: 24,
     },
     mediaIcons: {
         iconFillColor: '#EFF6FF',
         multipleColors: [],
-        iconSize: 1.5,
+        iconSize: 24,
     },
 };
 const props = withDefaults(defineProps<VerticalCardProps>(), {
@@ -114,12 +105,12 @@ const props = withDefaults(defineProps<VerticalCardProps>(), {
             infoIcons: {
                 iconFillColor: '#292D32',
                 multipleColors: [],
-                iconSize: 1.5,
+                iconSize: 24,
             },
             mediaIcons: {
                 iconFillColor: '#EFF6FF',
                 multipleColors: [],
-                iconSize: 1.5,
+                iconSize: 24,
             },
         };
     },
@@ -135,16 +126,16 @@ const props = withDefaults(defineProps<VerticalCardProps>(), {
                 '+359 123 456 78',
             ],
             infoIcons: [
-                'io-mail',
-                'bi-globe',
-                'io-location-sharp',
-                'bi-telephone-fill',
+                'bi:envelope',
+                'bi:globe',
+                'ion:location-outline',
+                'bi:telephone',
             ],
             mediaIcons: [
-                'bi-facebook',
-                'bi-instagram',
-                'bi-linkedin',
-                'bi-twitter',
+                'bi:facebook',
+                'bi:instagram',
+                'bi:linkedin',
+                'bi:twitter',
             ],
             userMedia: ['', '', ',', ''],
         };
@@ -195,7 +186,7 @@ composeLayout();
     height: 100%;
     flex: 1;
     min-height: 15.75rem;
-    padding: 2rem 1.5rem; 
+    padding: 2rem 1.5rem;
     justify-content: space-between;
     background: v-bind('finalSettings.cardBackground');
     gap: 1rem;

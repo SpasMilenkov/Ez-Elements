@@ -2,77 +2,45 @@
     <div class="card flex">
         <div class="banner"></div>
         <div class="image-container">
-            <img
-                src="/default_images/profile-picture.jpg"
-                alt="profile picture"
-                class="user-picture"
-            />
+            <img src="/default_images/profile-picture.jpg" alt="profile picture" class="user-picture" />
         </div>
         <div class="flex-column">
             <h2 class="subtitle">{{ data.userName }}</h2>
 
             <div class="flex-column" v-if="!customInfoColors">
-                <div
-                    class="flex"
-                    v-for="(info, index) in data.userInfo"
-                    :key="index"
-                >
-                    <v-icon
-                        :name="data.infoIcons[index]"
-                        :fill="settings.infoIcons?.iconFillColor"
-                        :scale="settings.infoIcons?.iconSize"
-                    ></v-icon>
+                <div class="flex" v-for="(info, index) in data.userInfo" :key="index">
+                    <Icon :icon="data.infoIcons[index]" :color="finalSettings.infoIcons?.iconFillColor"
+                        :width="finalSettings.infoIcons?.iconSize" />
                     <h3 class="user-info">{{ info }}</h3>
                 </div>
             </div>
 
             <div class="flex-column" v-if="customInfoColors">
-                <div
-                    class="flex"
-                    v-for="(info, index) in data.userInfo"
-                    :key="index"
-                >
-                    <v-icon
-                        :name="data.infoIcons[index]"
-                        :fill="settings.infoIcons?.multipleColors[index]"
-                        :scale="settings.infoIcons?.iconSize"
-                    ></v-icon>
+                <div class="flex" v-for="(info, index) in data.userInfo" :key="index">
+                    <Icon :icon="data.infoIcons[index]" :color="finalSettings.infoIcons?.iconFillColor"
+                        :width="finalSettings.infoIcons?.iconSize" />
                     <h3 class="user-info">{{ info }}</h3>
                 </div>
             </div>
 
             <div class="flex bottom-icons" v-if="!customMediaColors">
-                <a
-                    :href="info"
-                    v-for="(info, index) in data.mediaIcons"
-                    :key="index"
-                >
-                    <v-icon
-                        :name="data.mediaIcons[index]"
-                        :fill="settings.mediaIcons?.iconFillColor"
-                        :scale="settings.mediaIcons?.iconSize"
-                    />
+                <a class="media-link" :href="info" v-for="(info, index) in data.mediaIcons" :key="index">
+                    <Icon :icon="data.mediaIcons[index]" :color="finalSettings.mediaIcons?.iconFillColor"
+                        :width="finalSettings.mediaIcons?.iconSize" :inline="true"></Icon>
+
                 </a>
             </div>
-
             <div class="flex bottom-icons" v-if="customMediaColors">
-                <a
-                    :href="info"
-                    v-for="(info, index) in data.mediaIcons"
-                    :key="index"
-                >
-                    <v-icon
-                        :name="data.mediaIcons[index]"
-                        :fill="settings.mediaIcons?.multipleColors[index]"
-                        :scale="settings.mediaIcons?.iconSize"
-                    />
+                <a class="media-link"  :href="info" v-for="(info, index) in data.mediaIcons" :key="index">
+                    <Icon :icon="data.mediaIcons[index]" :color="finalSettings.mediaIcons?.multipleColors[index]"
+                        :width="finalSettings.mediaIcons?.iconSize"  :inline="true" />
                 </a>
             </div>
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import {computed, ref } from 'vue';
 import { CardData, CardSettings } from '../interfaces/CardInterfaces';
 import { useBorderRadius } from '../composables/usePresets';
 interface VerticalCardProps {
@@ -92,12 +60,12 @@ const defaultSettings: CardSettings = {
     infoIcons: {
         iconFillColor: '#292D32',
         multipleColors: [],
-        iconSize: 1.3,
+        iconSize: 28,
     },
     mediaIcons: {
         iconFillColor: '#292D32',
         multipleColors: [],
-        iconSize: 1.5,
+        iconSize: 28,
     },
 };
 
@@ -116,12 +84,12 @@ const props = withDefaults(defineProps<VerticalCardProps>(), {
             infoIcons: {
                 iconFillColor: '#292D32',
                 multipleColors: [],
-                iconSize: 1.3,
+                iconSize: 28,
             },
             mediaIcons: {
                 iconFillColor: '#292D32',
                 multipleColors: [],
-                iconSize: 1.5,
+                iconSize: 28,
             },
         };
     },
@@ -137,22 +105,29 @@ const props = withDefaults(defineProps<VerticalCardProps>(), {
                 '+359 123 456 78',
             ],
             infoIcons: [
-                'io-mail',
-                'bi-globe',
-                'io-location-sharp',
-                'bi-telephone-fill',
+                'bi:envelope',
+                'bi:globe',
+                'ion:location-outline',
+                'bi:telephone',
             ],
             mediaIcons: [
-                'bi-facebook',
-                'bi-instagram',
-                'bi-linkedin',
-                'bi-twitter',
+                'bi:facebook',
+                'bi:instagram',
+                'bi:linkedin',
+                'bi:twitter',
             ],
             userMedia: ['', '', ',', ''],
         };
     },
 });
-const finalSettings = ref({ ...defaultSettings, ...props.settings });
+const finalSettings = computed(() => {
+    const mergedSettings = {
+        ...defaultSettings,
+        ...props.settings
+    };
+
+    return mergedSettings;
+});
 const customInfoColors = ref<boolean>(false);
 const customMediaColors = ref<boolean>(false);
 
@@ -262,5 +237,10 @@ composeLayout();
     .user-info {
         max-width: 12rem;
     }
+}
+.media-link {
+    width: v-bind('finalSettings.mediaIcons?.iconSize');
+    height: v-bind('finalSettings.mediaIcons?.iconSize');
+
 }
 </style>
