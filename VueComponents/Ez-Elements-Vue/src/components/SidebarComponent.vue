@@ -1,10 +1,10 @@
 <template>
     <div class="sidebar flex-column">
         <div class="flex top-buttons">
-            <div class="title-container">
+            <div class="title-container" v-if="fullSize">
                 <h1 class="main-title flex">{{ data.menuTitle }}</h1>
             </div>
-            <button class="minimize-button" @click="toggle">{{ data.minimizeButton }}</button>
+            <button class="minimize-button" @click="toggle" v-if="fullSize">{{ data.minimizeButton }}</button>
         </div>
         <ul class="flex-column list-container">
             <li v-for="(link, index) in data.links" :key="index" class="list-item">
@@ -201,8 +201,14 @@ const width = ref<string>('16.75rem')
 const fullSize = ref<boolean>(true)
 // Switches the menu between expanded and minimized state
 const toggle = () => {
-    width.value = `${2.75}rem`
-    fullSize.value = !fullSize.value
+    if (fullSize.value) {
+        width.value = `${2.75}rem`
+        fullSize.value = false
+
+        return
+    }
+    width.value = '16.75rem'
+    fullSize.value = true
 }
 </script>
 <style scoped>
@@ -227,6 +233,8 @@ const toggle = () => {
     justify-content: flex-start;
     align-items: center;
     gap: 1rem;
+
+    transition: all .125s linear;
 }
 
 .title-container {
@@ -320,6 +328,7 @@ const toggle = () => {
     background: #34469C;
     flex-shrink: 0;
 }
+
 .icon.minimized {
     width: 2.38238rem;
     height: 2.25rem;
@@ -327,6 +336,7 @@ const toggle = () => {
     background: transparent;
     flex-shrink: 0;
 }
+
 .theme-switcher {
     width: 100%;
     min-height: 6rem;
