@@ -4,76 +4,77 @@
             <div class="title-container">
                 <h1 class="main-title flex">{{ data.menuTitle }}</h1>
             </div>
-            <button class="minimize-button">{{ data.minimizeButton }}</button>
+            <button class="minimize-button" @click="toggle">{{ data.minimizeButton }}</button>
         </div>
         <ul class="flex-column list-container">
             <li v-for="(link, index) in data.links" :key="index" class="list-item">
                 <router-link :to="link.linkPath" class="nav-link flex">
                     <Icon :icon="link.iconName" class="icon" />
-                    <h2 class="subtitle">{{ link.linkText }}</h2>
-                    <Icon
-                        :icon="finalSettings.arrowSettings?.customArrow"
-                        class="arrow-icon"
-                        :color="finalSettings.arrowSettings?.color"
-                        v-if="finalSettings.showArrows"
-                    />
+                    <h2 class="subtitle" v-if="fullSize">{{ link.linkText }}</h2>
+                    <Icon :icon="finalSettings.arrowSettings?.customArrow" class="arrow-icon"
+                        :color="finalSettings.arrowSettings?.color" v-if="finalSettings.showArrows && fullSize" />
                 </router-link>
             </li>
         </ul>
         <div class="theme-switcher flex-column">
             <div class="flex meta-wrapper">
                 <Icon class="theme-icon" icon="mdi:brush-variant" />
-                <h2 class="subtitle">Theme</h2>
+                <h2 class="subtitle" v-if="fullSize">Theme</h2>
             </div>
-            <div class="button-wrapper flex">
+            <div class="button-wrapper flex" v-if="fullSize">
                 <button class="theme-button theme-container-active flex-column">
-                    <Icon
-                        icon="material-symbols:clear-day-rounded"
-                        class="icon"
-                    />
+                    <Icon icon="material-symbols:clear-day-rounded" class="icon" />
                     Light
                 </button>
-                <button
-                    class="theme-button theme-container-inactive flex-column"
-                >
+                <button class="theme-button theme-container-inactive flex-column">
                     <Icon icon="ph:moon-stars-duotone" class="icon" />
                     Dark
                 </button>
             </div>
         </div>
+        div.
     </div>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
+// Define the interface for the settings 
 export interface SidebarSettings {
+    // Toggles arrows in the menu bar
     showArrows?: boolean;
+    // Settings for the arrows
     arrowSettings?: {
         customArrow?: string;
         color?: string;
         size?: string;
     };
+    // Settings for the title of the menu
     menuTitleSettings?: {
         size?: string;
         color?: string;
         font?: string;
     };
     linkSettings?: LinkSettings;
+    // Controls for the minimize button
     minimizeButtonSettings?: {
         size?: string;
         color?: string;
         background?: string;
     };
+    // Settings for the theme switcher on the bottom of the menu
     themeSwitcherSettings?: {
         activeThemeColor: string,
         activeThemeIcon: string,
         inactiveThemeColor: string,
         inactiveThemIcon: string
     }
+    // Toggles the use of individual settings for every link
+    // Example: different backgrounds for every menu tab
     useIndividualSettings?: boolean;
+    // Array of link settings for each link
     individualLinkSettings?: LinkSettings[];
 }
-
+// Settings for the links in the menu
 export interface LinkSettings {
     color?: string;
     size?: string;
@@ -85,7 +86,7 @@ export interface LinkSettings {
     iconSize?: string;
     showArrow?: boolean;
 }
-
+// Data provided for the link
 export interface LinkData {
     iconName: string;
     linkPath: string;
@@ -103,7 +104,8 @@ interface SidebarProps {
     data?: SidebarData;
 }
 
-
+// Defines the default configuration for the menu
+// By the default all links share the same settings and arrows are turned on
 const defaultSettings: SidebarSettings = {
     showArrows: true,
     arrowSettings: {
@@ -193,6 +195,15 @@ const finalSettings = computed(() => {
 
     return mergedSettings;
 });
+// Controls the width of the menu
+const width = ref<string>('16.75rem')
+// Tracks whether the menu is expanded on minimized
+const fullSize = ref<boolean>(true)
+// Switches the menu between expanded and minimized state
+const toggle = () => {
+    width.value = `${2.75}rem`
+    fullSize.value = !fullSize.value
+}
 </script>
 <style scoped>
 .top-buttons {
@@ -208,7 +219,7 @@ const finalSettings = computed(() => {
     top: 0;
 
     display: flex;
-    max-width: 16.75rem;
+    max-width: v-bind('width');
     width: 100%;
     overflow: hidden;
     padding: 0.5rem;
@@ -302,6 +313,20 @@ const finalSettings = computed(() => {
     flex-shrink: 0;
 }
 
+.icon.minimized.selected {
+    width: 2.38238rem;
+    height: 2.25rem;
+    border-radius: 2.38238rem;
+    background: #34469C;
+    flex-shrink: 0;
+}
+.icon.minimized {
+    width: 2.38238rem;
+    height: 2.25rem;
+    border-radius: 2.38238rem;
+    background: transparent;
+    flex-shrink: 0;
+}
 .theme-switcher {
     width: 100%;
     min-height: 6rem;
