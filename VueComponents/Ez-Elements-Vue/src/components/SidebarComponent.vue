@@ -1,27 +1,22 @@
 <template>
-    <div class="sidebar flex-column">
-        <div class="flex top-buttons">
-            <div class="title-container" v-if="fullSize">
-                <h1 class="main-title flex">{{ data.menuTitle }}</h1>
-            </div>
-            <button class="minimize-button" @click="toggle" v-if="fullSize">{{ data.minimizeButton }}</button>
-        </div>
+    <div class="sidebar flex-column" @mouseleave="shrink" @mouseover="expand">
         <ul class="flex-column list-container">
             <li v-for="(link, index) in data.links" :key="index" class="list-item">
                 <router-link :to="link.linkPath" class="nav-link flex">
                     <Icon :icon="link.iconName" class="icon" />
-                    <h2 class="subtitle" v-if="fullSize">{{ link.linkText }}</h2>
+                    <h2 :class="{ minimized: !fullSize }" class=" subtitle">{{ link.linkText }}</h2>
                     <Icon :icon="finalSettings.arrowSettings?.customArrow" class="arrow-icon"
-                        :color="finalSettings.arrowSettings?.color" v-if="finalSettings.showArrows && fullSize" />
+                        :color="finalSettings.arrowSettings?.color" v-if="finalSettings.showArrows"
+                        :class="{ minimized: !fullSize }" />
                 </router-link>
             </li>
         </ul>
-        <div class="theme-switcher flex-column">
+        <div class="theme-switcher flex-column" :class="{ 'minimize-padding': !fullSize }">
             <div class="flex meta-wrapper">
                 <Icon class="theme-icon" icon="mdi:brush-variant" />
-                <h2 class="subtitle" v-if="fullSize">Theme</h2>
+                <h2 class="subtitle" :class="{ minimized: !fullSize }">Theme</h2>
             </div>
-            <div class="button-wrapper flex" v-if="fullSize">
+            <div class="button-wrapper flex" :class="{ minimized: !fullSize }">
                 <button class="theme-button theme-container-active flex-column">
                     <Icon icon="material-symbols:clear-day-rounded" class="icon" />
                     Light
@@ -32,12 +27,11 @@
                 </button>
             </div>
         </div>
-        div.
     </div>
 </template>
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-
+import { computed, onMounted, ref } from 'vue';
+import ripple from './RippleComponent.vue'
 // Define the interface for the settings 
 export interface SidebarSettings {
     // Toggles arrows in the menu bar
@@ -199,24 +193,23 @@ const finalSettings = computed(() => {
 const width = ref<string>('16.75rem')
 // Tracks whether the menu is expanded on minimized
 const fullSize = ref<boolean>(true)
-// Switches the menu between expanded and minimized state
-const toggle = () => {
-    if (fullSize.value) {
-        width.value = `${2.75}rem`
-        fullSize.value = false
 
-        return
-    }
+// Switches the menu between expanded and minimized state
+const shrink = () => {
+    width.value = `${4}rem`
+    fullSize.value = false
+
+}
+const expand = () => {
     width.value = '16.75rem'
     fullSize.value = true
 }
+
+onMounted(() => {
+    shrink()
+})
 </script>
 <style scoped>
-.top-buttons {
-    width: 100%;
-    justify-content: space-between;
-}
-
 .sidebar {
     height: 100vh;
     overflow: auto;
@@ -237,44 +230,13 @@ const toggle = () => {
     transition: all .125s linear;
 }
 
-.title-container {
-    height: 3.125rem;
-    width: 100%;
-    max-width: 12rem;
-    border-radius: 0.9375rem;
-    background: #3f54a8;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
+.minimized {
+    opacity: 0;
+    transition: opacity .1s linear;
 }
 
-.main-title {
-    color: #f4f7f9;
-    font-family: Lato;
-    font-size: 2rem;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    text-align: center;
-}
-
-.minimize-button {
-    display: flex;
-    overflow: hidden;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    background: #3f54a8;
-    justify-content: center;
-    align-items: center;
-    color: #f4f7f9;
-    font-family: Lato;
-    font-size: 3rem;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    text-align: center;
+.minimized>.nav-link {
+    opacity: 1;
 }
 
 .list-container,
@@ -290,9 +252,27 @@ const toggle = () => {
     width: 100%;
     height: 3.125rem;
     border-radius: 0.9375rem;
-    background: #3f54a8;
+    background: hsl(228, 45%, 45%);
     gap: 1rem;
     padding: 0.5rem 0.5rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+span.ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 600ms linear;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
 }
 
 .subtitle {
@@ -321,25 +301,9 @@ const toggle = () => {
     flex-shrink: 0;
 }
 
-.icon.minimized.selected {
-    width: 2.38238rem;
-    height: 2.25rem;
-    border-radius: 2.38238rem;
-    background: #34469C;
-    flex-shrink: 0;
-}
-
-.icon.minimized {
-    width: 2.38238rem;
-    height: 2.25rem;
-    border-radius: 2.38238rem;
-    background: transparent;
-    flex-shrink: 0;
-}
 
 .theme-switcher {
     width: 100%;
-    min-height: 6rem;
     border-radius: 0.9375rem;
     background: #3f54a8;
     margin-top: auto;
@@ -347,6 +311,10 @@ const toggle = () => {
     align-items: center;
     justify-content: center;
     gap: 1rem;
+}
+
+.minimize-padding {
+    padding: 0.5rem;
 }
 
 .meta-wrapper {
@@ -362,6 +330,11 @@ const toggle = () => {
 .button-wrapper {
     gap: 1rem;
     justify-content: center;
+}
+
+.minimized.button-wrapper,
+.minimized.subtitle {
+    display: none;
 }
 
 .theme-button {
