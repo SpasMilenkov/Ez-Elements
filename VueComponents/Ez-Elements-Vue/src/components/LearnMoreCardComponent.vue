@@ -3,16 +3,15 @@
         <div class="flex-column">
             <h1 class="card-heading"></h1>
             <p class="card-text"></p>
-            <mainButton></mainButton>
+            <router-link to="/" href=""></router-link>
         </div>
         <picture>
-            <img src="" alt="" class="info-image">
+            <source>
+            <img src="" alt="" class="info-image" loading="lazy" decoding="auto" fetchpriority="high">
         </picture>
     </div>
 </template>
 <script setup lang='ts'>
-import mainButton from './MainButtonComponent.vue';
-
 
 </script>
 <style scoped></style>
