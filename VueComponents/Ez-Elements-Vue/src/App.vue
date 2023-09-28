@@ -1,46 +1,38 @@
 <template>
     <main class="grid">
-            <div :class="$style.flex">
-                <MainButton
-                    :data="{
-                        content: 'Test',
-                    }"
-                    :settings="{
-                        color: 'black',
-                    }"
-                    @click="togglePopup"
-                />
-                <SecondaryButton
-                    :data="{
-                        content: 'Test',
-                    }"
-                />
-            </div>
-            <div :class="$style.flex">
-                <UserVerticalCard />
-            </div>
-            <div :class="$style.flex">
-                <UserHorizontalCard />
-            </div>
-            <div :class="$style.flex">
-                <ActionCard
-                    :data="{
-                        cardTitle: 'My Card',
-                        cardContent: 'My epic popup i guess',
-                    }"
-                    v-if="showPopup"
-                    @close-popup="showPopup = false"
-                />
-            </div>
-            <div :class="$style.flex">
-                <TallFormComponent />
-            </div>
-            <div :class="$style.flex">
-                <TestimonialCard />
-            </div>
-            <div :class="$style.flex">
-                <TallTestimonialCard />
-            </div>
+        <!-- <div :class="$style.flex">
+            <MainButton :data="{
+                content: 'Test',
+            }" :settings="{
+    color: 'black',
+}" @click="togglePopup" />
+            <SecondaryButton :data="{
+                content: 'Test',
+            }" />
+        </div>
+        <div :class="$style.flex">
+            <UserVerticalCard />
+        </div>
+        <div :class="$style.flex">
+            <UserHorizontalCard />
+        </div>
+        <div :class="$style.flex">
+            <ActionCard :data="{
+                cardTitle: 'My Card',
+                cardContent: 'My epic popup i guess',
+            }" v-if="showPopup" @close-popup="showPopup = false" />
+        </div>
+        <div :class="$style.flex">
+            <TallFormComponent />
+        </div>
+        <div :class="$style.flex">
+            <TestimonialCard />
+        </div>
+        <div :class="$style.flex">
+            <TallTestimonialCard />
+        </div> -->
+        <SideBarComponent />
+        <MainButton>AAAAA</MainButton>
     </main>
 
     <!-- 
@@ -69,7 +61,8 @@ import SecondaryButton from './components/SecondaryButtonComponent.vue';
 import TallFormComponent from './components/FormComponent.vue';
 import TestimonialCard from './components/TestimonialCardComponent.vue';
 import TallTestimonialCard from './components/TallTestimonialCardComponent.vue';
-
+import SideBarComponent from './components/SidebarComponent.vue'
+import RippleComponent from './components/RippleComponent.vue';
 const showPopup = ref(false);
 
 function togglePopup() {
@@ -77,7 +70,7 @@ function togglePopup() {
 }
 </script>
 <style module>
-.flex{
+.flex {
     display: flex;
     align-items: center;
     justify-content: center;
