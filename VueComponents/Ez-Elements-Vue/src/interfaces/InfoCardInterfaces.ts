@@ -6,8 +6,8 @@ export interface InfoCardSettings {
     titleSize?: string;
     contentSize?: string;
     backgroundColor?: string;
-    cardBorderRadius: RadiusPreset;
-    imageSettings: ImageSettings;
+    cardBorderRadius?: RadiusPreset;
+    imageSettings?: ImageSettings;
     linkSettings?: {
         color?: string;
         background?: string;
