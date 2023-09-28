@@ -1,0 +1,1 @@
+declare type RadiusPreset = 'no-radius' | 'semi-rounded' | 'rounded'
