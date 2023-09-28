@@ -28,7 +28,7 @@ body {
 } */
 #app {
     box-sizing: border-box;
-    max-width: 1280px;
+    width: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,7 +36,6 @@ body {
     gap: 1rem;
     flex-wrap: wrap;
     margin: 0 auto;
-    padding: 2rem;
     text-align: center;
     min-width: 0;
 }
@@ -77,6 +76,13 @@ body {
 }
 .reset {
     all: unset;
+}
+.grid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    grid-template-rows: auto;
 }
 input::placeholder {
     opacity: 0.6;
