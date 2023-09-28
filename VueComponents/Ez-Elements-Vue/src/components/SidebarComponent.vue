@@ -1,8 +1,8 @@
 <template>
     <div class="sidebar flex-column" @mouseleave="shrink" @mouseover="expand">
         <ul class="flex-column list-container">
-            <li v-for="(link, index) in data.links" :key="index" class="list-item">
-                <router-link :to="link.linkPath" class="nav-link flex">
+            <li v-for="(link, index) in data.links" :key="index" class="list-item" ref="tabs">
+                <router-link :to="link.linkPath" class="nav-link flex" @click="switchTab(index)">
                     <Icon :icon="link.iconName" class="icon" />
                     <h2 :class="{ minimized: !fullSize }" class=" subtitle">{{ link.linkText }}</h2>
                     <Icon :icon="finalSettings.arrowSettings?.customArrow" class="arrow-icon"
@@ -31,7 +31,8 @@
 </template>
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import ripple from './RippleComponent.vue'
+
+
 // Define the interface for the settings 
 export interface SidebarSettings {
     // Toggles arrows in the menu bar
@@ -41,12 +42,6 @@ export interface SidebarSettings {
         customArrow?: string;
         color?: string;
         size?: string;
-    };
-    // Settings for the title of the menu
-    menuTitleSettings?: {
-        size?: string;
-        color?: string;
-        font?: string;
     };
     linkSettings?: LinkSettings;
     // Controls for the minimize button
@@ -60,7 +55,7 @@ export interface SidebarSettings {
         activeThemeColor: string,
         activeThemeIcon: string,
         inactiveThemeColor: string,
-        inactiveThemIcon: string
+        inactiveThemeIcon: string
     }
     // Toggles the use of individual settings for every link
     // Example: different backgrounds for every menu tab
@@ -76,6 +71,7 @@ export interface LinkSettings {
     hoverColor?: string;
     activeColor?: string;
     background?: string;
+    activeBackground?: string;
     iconColor?: string;
     iconSize?: string;
     showArrow?: boolean;
@@ -107,12 +103,9 @@ const defaultSettings: SidebarSettings = {
         color: '#f4f7f9',
         size: '2rem',
     },
-    menuTitleSettings: {
-        size: '1rem',
-        color: '#f4f7f9',
-        font: 'Roboto, var(--system-ui)',
+    linkSettings: {
+        color: '#CAD2D9'
     },
-    linkSettings: {},
     minimizeButtonSettings: {
         size: '3rem',
         color: '#f4f7f9',
@@ -130,11 +123,6 @@ const props = withDefaults(defineProps<SidebarProps>(), {
                 customArrow: 'ic:round-arrow-forward-ios',
                 color: '#f4f7f9',
                 size: '2rem'
-            },
-            menuTitleSettings: {
-                size: '1rem',
-                color: '#f4f7f9',
-                font: 'Roboto, var(--system-ui)',
             },
             linkSettings: {},
             minimizeButtonSettings: {
@@ -189,6 +177,14 @@ const finalSettings = computed(() => {
 
     return mergedSettings;
 });
+
+const tabs = ref<InstanceType<typeof HTMLDListElement>[]>([])
+
+const switchTab = (index: number) => {
+    const activeTab = tabs.value[index]
+    activeTab.classList.add('active')
+}
+
 // Controls the width of the menu
 const width = ref<string>('16.75rem')
 // Tracks whether the menu is expanded on minimized
@@ -198,7 +194,6 @@ const fullSize = ref<boolean>(true)
 const shrink = () => {
     width.value = `${4}rem`
     fullSize.value = false
-
 }
 const expand = () => {
     width.value = '16.75rem'
@@ -206,7 +201,7 @@ const expand = () => {
 }
 
 onMounted(() => {
-    shrink()
+    shrink()    
 })
 </script>
 <style scoped>
@@ -259,24 +254,12 @@ onMounted(() => {
     overflow: hidden;
     cursor: pointer;
 }
-
-span.ripple {
-    position: absolute;
-    border-radius: 50%;
-    transform: scale(0);
-    animation: ripple 600ms linear;
-    background-color: rgba(255, 255, 255, 0.7);
-}
-
-@keyframes ripple {
-    to {
-        transform: scale(4);
-        opacity: 0;
-    }
+.nav-link.active{
+    color: v-bind('finalSettings.linkSettings?.activeColor');
 }
 
 .subtitle {
-    color: #f4f7f9;
+    color: v-bind('settings.linkSettings?.color');
     font-family: Lato;
     font-size: 1.5rem;
     font-style: normal;
