@@ -1,6 +1,6 @@
 <template>
     <div ref="container" @mousedown="addRipple" class="ripple-outer">
-        <transition-group class="ripples" name="grow" tag="div">
+        <transition-group class="ripples" name="grow" :tag="tag">
             <div class="ripple" v-for="ripple in ripples" :key="ripple.id" :style="{
                 top: ripple.top,
                 left: ripple.left,
@@ -24,7 +24,9 @@ interface Ripple {
     top: string;
     id: number;
 }
-
+defineProps<{
+    tag: string
+}>()
 const ripples = ref<Ripple[]>([]);
 const rippleWidth = ref(0);
 const halfRippleWidth = ref(0);
