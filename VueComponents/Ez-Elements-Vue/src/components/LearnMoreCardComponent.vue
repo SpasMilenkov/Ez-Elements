@@ -48,7 +48,5 @@ interface InfoCardProps {
     settings?: InfoCardSettings,
     data?: InfoCardData
 }
-
-defineProps<InfoCardProps>()
 </script>
 <style scoped></style>
