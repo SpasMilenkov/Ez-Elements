@@ -1,17 +1,18 @@
 <template>
     <div class="card-body">
         <div class="flex-column">
-            <h1 class="card-heading"></h1>
-            <p class="card-text"></p>
-            <router-link to="/" href=""></router-link>
+            <h1 class="card-heading">{{ data.cardTitle }}</h1>
+            <p class="card-text">{{ data.cardContent }}</p>
+            <router-link :to="data.linkPath" class="card-link">{{ data.linkContent }}</router-link>
         </div>
         <picture>
             <source type="webp" srcset="">
-            <img src="" alt="" class="info-image" loading="lazy" decoding="async" fetchpriority="high" sizes="">
+            <img class="info-image" :src="data.imageSingleSource" :alt="data.imageAlt" class="info-image" :loading="finalSettings.imageSettings?.imageLoading" :decoding="finalSettings.imageSettings?.imageDecoding" fetchpriority="high" sizes="">
         </picture>
     </div>
 </template>
 <script setup lang='ts'>
+import { ref } from 'vue';
 import { InfoCardSettings, InfoCardData } from '../interfaces/InfoCardInterfaces'
 
 const defaultSettings: InfoCardSettings = {
